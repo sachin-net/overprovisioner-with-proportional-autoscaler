@@ -13,7 +13,9 @@ Example 1: let’s assume that 30% of buffer capacity is required on a cluster w
 How to adjust cluster-proportional autoscaler ?
 - Use "coresPerReplica". As the name indicate that Replica (of 4cpu here) needs to be added for every "x" amount of cores.
 - To maintain 30% of buffer capacity, for every 14 workload cores a dummy replica (of 4CPU here) needs to be added (14*30%=4.2 ~4 cores).
- 
+
+---
+
 Example 2: let’s assume that 20% of buffer capacity is required on a cluster with 5 x c5.9xlarge nodes / 180 cores.
 - 5x c5.9xl = 5 * 36 cores = 180 cores.
 - 20% of 180 cores = 36 cores.
@@ -24,6 +26,7 @@ How to adjust cluster-proportional autoscaler ?
 - Use "coresPerReplica". As the name indicate that Replica (of 4cpu here) needs to be added for every "x" amount of cores.
 - To maintain 20% of buffer capacity, for every 20 cores a replica (of 4CPU here) needs to be added (20*20%=4 cores)
  
+---
 Example 3: let’s assume that 10% of buffer capacity is required on a cluster with 5 x c5.9xlarge nodes / 180 cores.
 - 5x c5.9xl = 5 * 36 cores = 180 cores.
 - 10% of 180 cores = 18 cores.
