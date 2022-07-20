@@ -1,5 +1,11 @@
 # overprovisioner-with-proportional-autoscaler
 
+To Install, use below command. 
+
+```
+kubectl apply -f CA-PPA.yml
+```
+
 TL;DR,
 
 Assuming each Pause / Dumy POD has 2 CPU, below values are applicable.  
