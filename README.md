@@ -3,20 +3,20 @@
 TL;DR,
 
 Assuming each Pause / Dumy POD has 2 CPU, below values are applicable.  
- To maintain 40% buffer capacity, set "coresPerReplica" as "10" ----> (5*40% =~ 2 Cores)
- To maintain 35% buffer capacity, set "coresPerReplica" as "12" ----> (6*35% =~ 2 Cores)
- To maintain 30% buffer capacity, set "coresPerReplica" as "14" ----> (7*30% =~ 2 Cores)
- To maintain 20% buffer capacity, set "coresPerReplica" as "20" ----> (10*20% =~ 2 Cores)
- To maintain 10% buffer capacity, set "coresPerReplica" as "40" ----> (20*10% =~ 2 Cores)
+- To maintain 40% buffer capacity, set "coresPerReplica" as "10" ----> (5*40% =~ 2 Cores)
+- To maintain 35% buffer capacity, set "coresPerReplica" as "12" ----> (6*35% =~ 2 Cores)
+- To maintain 30% buffer capacity, set "coresPerReplica" as "14" ----> (7*30% =~ 2 Cores)
+- To maintain 20% buffer capacity, set "coresPerReplica" as "20" ----> (10*20% =~ 2 Cores)
+- To maintain 10% buffer capacity, set "coresPerReplica" as "40" ----> (20*10% =~ 2 Cores)
 
 ---
 
 Assuming each Pause / Dumy POD has 4 CPU, below values are applicable.  
- To maintain 40% buffer capacity, set "coresPerReplica" as "10" ----> (10*40% =~ 4Cores)
- To maintain 35% buffer capacity, set "coresPerReplica" as "12" ----> (12*35% =~ 4Cores)
- To maintain 30% buffer capacity, set "coresPerReplica" as "14" ----> (14*30% =~ 4Cores)
- To maintain 20% buffer capacity, set "coresPerReplica" as "20" ----> (20*20% =~ 4Cores)
- To maintain 10% buffer capacity, set "coresPerReplica" as "40" ----> (40*10% =~ 4Cores)
+- To maintain 40% buffer capacity, set "coresPerReplica" as "10" ----> (10*40% =~ 4Cores)
+- To maintain 35% buffer capacity, set "coresPerReplica" as "12" ----> (12*35% =~ 4Cores)
+- To maintain 30% buffer capacity, set "coresPerReplica" as "14" ----> (14*30% =~ 4Cores)
+- To maintain 20% buffer capacity, set "coresPerReplica" as "20" ----> (20*20% =~ 4Cores)
+- To maintain 10% buffer capacity, set "coresPerReplica" as "40" ----> (40*10% =~ 4Cores)
 
 
 
