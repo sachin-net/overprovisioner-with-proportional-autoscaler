@@ -1,0 +1,130 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: overprovisioning
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PriorityClass
+metadata:
+  name: overprovisioning
+value: -1
+globalDefault: false
+description: "Priority class used by overprovisioning."
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overprovisioning
+  namespace: overprovisioning
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      run: overprovisioning
+  template:
+    metadata:
+      labels:
+        run: overprovisioning
+    spec:
+      priorityClassName: overprovisioning
+      containers:
+      - name: reserve-resources
+        image: k8s.gcr.io/pause
+        resources:
+          requests:
+            cpu: 4
+            memory: 8Gi
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: overprovisioning
+  namespace: overprovisioning
+data:
+#Assuming each Pause / Dumy POD has 2 CPU, below values are applicable.  
+# To maintain 40% buffer capacity, set "coresPerReplica" as "10" ----> (5*40% =~ 2 Cores)
+# To maintain 35% buffer capacity, set "coresPerReplica" as "12" ----> (6*35% =~ 2 Cores)
+# To maintain 30% buffer capacity, set "coresPerReplica" as "14" ----> (7*30% =~ 2 Cores)
+# To maintain 20% buffer capacity, set "coresPerReplica" as "20" ----> (10*20% =~ 2 Cores)
+# To maintain 10% buffer capacity, set "coresPerReplica" as "40" ----> (20*10% =~ 2 Cores)
+
+#Assuming each Pause / Dumy POD has 4 CPU, below values are applicable.  
+# To maintain 40% buffer capacity, set "coresPerReplica" as "10" ----> (10*40% =~ 4Cores)
+# To maintain 35% buffer capacity, set "coresPerReplica" as "12" ----> (12*35% =~ 4Cores)
+# To maintain 30% buffer capacity, set "coresPerReplica" as "14" ----> (14*30% =~ 4Cores)
+# To maintain 20% buffer capacity, set "coresPerReplica" as "20" ----> (20*20% =~ 4Cores)
+# To maintain 10% buffer capacity, set "coresPerReplica" as "40" ----> (40*10% =~ 4Cores)
+
+  linear: |-
+    {
+      "coresPerReplica": 14,
+      "min": 5,
+      "max": 100,
+      "preventSinglePointFailure": true,
+      "includeUnschedulableNodes": true
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overprovisioning-autoscaler
+  namespace: overprovisioning
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: overprovisioning-autoscaler
+  template:
+    metadata:
+      labels:
+        app: overprovisioning-autoscaler
+    spec:
+      containers:
+        - image: k8s.gcr.io/cpa/cluster-proportional-autoscaler:1.8.3
+          name: autoscaler
+          command:
+            - /cluster-proportional-autoscaler
+            - --namespace=overprovisioning
+            - --configmap=overprovisioning
+            - --target=deployment/overprovisioning
+            - --logtostderr=true
+            - --v=2
+      serviceAccountName: cluster-proportional-autoscaler
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: cluster-proportional-autoscaler
+  namespace: overprovisioning
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-proportional-autoscaler
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["list", "watch"]
+  - apiGroups: [""]
+    resources: ["replicationcontrollers/scale"]
+    verbs: ["get", "update"]
+  - apiGroups: ["extensions","apps"]
+    resources: ["deployments/scale", "replicasets/scale"]
+    verbs: ["get", "update"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "create"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-proportional-autoscaler
+subjects:
+  - kind: ServiceAccount
+    name: cluster-proportional-autoscaler
+    namespace: overprovisioning
+roleRef:
+  kind: ClusterRole
+  name: cluster-proportional-autoscaler
+  apiGroup: rbac.authorization.k8s.io
