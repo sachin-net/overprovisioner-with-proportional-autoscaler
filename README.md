@@ -19,6 +19,7 @@ Assuming each Pause / Dumy POD has 4 CPU, below values are applicable.
 - To maintain 10% buffer capacity, set "coresPerReplica" as "40" ----> (40*10% =~ 4Cores)
 
 
+---
 
 Example 1: let’s assume that 30% of buffer capacity is required on a cluster with 5 x c5.9xlarge nodes / 180 cores.
 - 5x c5.9xl = 5 * 36 cores = 180 cores.
